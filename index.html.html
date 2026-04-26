@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Estudos – Inglês</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --surface2: #1c2030;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --morning: #f59e0b;
+    --night: #6366f1;
+    --done-morning: #10b981;
+    --done-night: #10b981;
+    --seg: #3b82f6;
+    --ter: #8b5cf6;
+    --qua: #06b6d4;
+    --qui: #06b6d4;
+    --sex: #f97316;
+    --sab: #ec4899;
+    --dom: #14b8a6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  /* Background grid pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .header-eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #f59e0b 0%, #a78bfa 60%, #6366f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Progress bar */
+  .progress-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  .progress-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .progress-bar-outer {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #6366f1);
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 0%;
+  }
+
+  .progress-count {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    animation: fadeDown 0.6s 0.15s ease both;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  /* Week grid */
+  .week {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Day row */
+  .day-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 1fr;
+    gap: 12px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .day-row:nth-child(1) { animation-delay: 0.1s; }
+  .day-row:nth-child(2) { animation-delay: 0.15s; }
+  .day-row:nth-child(3) { animation-delay: 0.2s; }
+  .day-row:nth-child(4) { animation-delay: 0.25s; }
+  .day-row:nth-child(5) { animation-delay: 0.3s; }
+  .day-row:nth-child(6) { animation-delay: 0.35s; }
+  .day-row:nth-child(7) { animation-delay: 0.4s; }
+
+  /* Day label */
+  .day-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    padding: 16px 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-align: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .day-label::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--day-color);
+  }
+
+  .day-label .day-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--day-color);
+  }
+
+  .day-label .day-focus {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .day-label .day-emoji {
+    font-size: 20px;
+  }
+
+  /* Block card */
+  .block-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .block-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .block-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .block-card:active {
+    transform: scale(0.98);
+  }
+
+  /* Morning card */
+  .block-card.morning {
+    border-left: 3px solid var(--morning);
+  }
+
+  .block-card.morning::before {
+    background: radial-gradient(ellipse at top left, rgba(245,158,11,0.08), transparent 60%);
+    opacity: 1;
+  }
+
+  /* Night card */
+  .block-card.night {
+    border-left: 3px solid var(--night);
+  }
+
+  .block-card.night::before {
+    background: radial-gradient(ellipse at top left, rgba(99,102,241,0.08), transparent 60%);
+    opacity: 1;
+  }
+
+  /* Done state */
+  .block-card.done {
+    border-left-color: var(--done-morning) !important;
+    opacity: 0.65;
+  }
+
+  .block-card.done::before {
+    background: radial-gradient(ellipse at top left, rgba(16,185,129,0.06), transparent 60%);
+    opacity: 1 !important;
+  }
+
+  /* Both done = row celebration */
+  .day-row.all-done .block-card {
+    opacity: 0.5;
+  }
+
+  .day-row.all-done .day-label {
+    opacity: 0.5;
+  }
+
+  /* Card header */
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+
+  .card-type {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .card-type.morning { color: var(--morning); }
+  .card-type.night { color: var(--night); }
+  .card-type.done { color: var(--done-morning) !important; }
+
+  .type-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .check-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+    font-size: 11px;
+  }
+
+  .block-card.done .check-icon {
+    background: var(--done-morning);
+    border-color: var(--done-morning);
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .card-time {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .card-content {
+    font-size: 12px;
+    color: rgba(232,234,240,0.6);
+    line-height: 1.6;
+  }
+
+  .card-content ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .card-content ul li::before {
+    content: '→ ';
+    opacity: 0.4;
+  }
+
+  /* Done overlay text */
+  .done-badge {
+    display: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--done-morning);
+    margin-top: 8px;
+  }
+
+  .block-card.done .done-badge { display: block; }
+  .block-card.done .card-content { display: none; }
+
+  /* Celebration row banner */
+  .row-done-banner {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #10b981;
+    white-space: nowrap;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 99px;
+    padding: 4px 12px;
+  }
+
+  /* Aula Preply special */
+  .block-card.preply {
+    border-left-color: #06b6d4;
+    background: linear-gradient(135deg, #141720, #141c24);
+  }
+
+  .card-type.preply { color: #06b6d4; }
+
+  /* Sunday rest */
+  .block-card.rest {
+    border-left-color: var(--dom);
+    cursor: default;
+  }
+
+  .block-card.rest:hover { transform: none; }
+
+  /* Footer */
+  footer {
+    margin-top: 40px;
+    text-align: center;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+
+  .rules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .rule-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .rule-chip span { color: var(--text); font-weight: 500; }
+
+  footer p {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  footer strong {
+    background: linear-gradient(90deg, #f59e0b, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Confetti burst */
+  .confetti-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 999;
+    overflow: hidden;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    animation: confettiFall 1.2s ease-in forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+  }
+
+  .block-card.just-done {
+    animation: pulse 0.5s ease;
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    body { padding: 16px 10px; }
+
+    .day-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Label vira uma faixa horizontal compacta */
+    .day-label {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-align: left;
+    }
+
+    .day-label .day-emoji { font-size: 18px; }
+    .day-label .day-name { font-size: 13px; letter-spacing: 0.04em; }
+    .day-label .day-focus { font-size: 10px; line-height: 1.3; }
+
+    .block-card {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+    }
+
+    .card-title { font-size: 14px; }
+    .card-content { font-size: 12px; }
+    .card-type { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<div class="container">
+  <header>
+    <div class="header-eyebrow">Rotina Semanal</div>
+    <h1>Plano de Estudos – Inglês</h1>
+    <p>Consistência &gt; Perfeição &nbsp;·&nbsp; Clique nos blocos para marcar como feito</p>
+  </header>
+
+  <div class="progress-wrapper">
+    <div class="progress-label">Progresso do dia</div>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar"></div>
+    </div>
+    <div class="progress-count" id="progressCount">0 / 0</div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--morning)"></div>
+      Manhã (6h–8h)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--night)"></div>
+      Noite (22h–23h)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: #10b981"></div>
+      Concluído
+    </div>
+  </div>
+
+  <div class="week" id="week"></div>
+
+  <footer>
+    <div class="rules">
+      <div class="rule-chip">❌ Não traduzir <span>tudo</span></div>
+      <div class="rule-chip">❌ Não pausar o vídeo <span>toda hora</span></div>
+      <div class="rule-chip">✅ Falar <span>todos os dias</span></div>
+      <div class="rule-chip">✅ Aceitar o <span>erro</span></div>
+      <div class="rule-chip">🚨 Cansado? <span>10 min vídeo + 5 min fala</span> — missão cumprida</div>
+    </div>
+    <p><strong>Consistência + Exposição + Prática = Fluência 🚀</strong></p>
+  </footer>
+</div>
+
+<script>
+const DAYS = [
+  {
+    key: 'seg',
+    name: 'Segunda',
+    emoji: '📅',
+    focus: 'Speaking\n+ Entrevista',
+    color: '#3b82f6',
+    morning: {
+      title: 'Listening + Shadowing + Fala',
+      time: '06:30 – 07:30',
+      items: ['20 min → vídeo em inglês (sem legenda)', '20 min → repetir frases (shadowing)', '20 min → falar resumo + opinião']
+    },
+    night: {
+      title: 'Treino com IA + Frases',
+      time: '19:00 – 20:00',
+      items: ['30 min → simulação de entrevista com IA', '15 min → criar 5 frases com palavras novas', '15 min → falar essas frases em voz alta']
+    }
+  },
+  {
+    key: 'ter',
+    name: 'Terça',
+    emoji: '📖',
+    focus: 'Leitura\n+ Speaking',
+    color: '#8b5cf6',
+    morning: {
+      title: 'Leitura + Explicação oral',
+      time: '06:30 – 07:30',
+      items: ['20 min → ler texto curto (News in Levels)', '20 min → entender contexto (sem traduzir tudo)', '20 min → explicar em voz alta']
+    },
+    night: {
+      title: 'Leitura leve + Fala',
+      time: '22:00',
+      items: ['15 min → leitura leve (ESL Fast)', '10 min → falar sobre o texto']
+    }
+  },
+  {
+    key: 'qua',
+    name: 'Quarta',
+    emoji: '🎓',
+    focus: 'Listening\n+ Aula Preply',
+    color: '#06b6d4',
+    morning: {
+      title: 'Vídeo + Shadowing + Resumo',
+      time: '06:30 – 07:30',
+      items: ['20 min → vídeo leve em inglês', '20 min → repetir frases', '20 min → falar resumo simples']
+    },
+    night: {
+      title: 'Aula Preply 🎯',
+      time: 'Noite',
+      items: ['Foco total na aula', 'Sem estudar depois — descanse'],
+      type: 'preply'
+    }
+  },
+  {
+    key: 'qui',
+    name: 'Quinta',
+    emoji: '🎓',
+    focus: 'Leitura\n+ Aula Preply',
+    color: '#06b6d4',
+    morning: {
+      title: 'Leitura + Fala',
+      time: '06:30 – 07:30',
+      items: ['20 min → ler texto curto (News in Levels)', '20 min → entender geral', '20 min → falar sobre o tema']
+    },
+    night: {
+      title: 'Aula Preply 🎯',
+      time: '18:00 – 18:50',
+      items: ['Foco total na aula', 'Participe bastante', 'Não traduza – pense em inglês!'],
+      type: 'preply'
+    }
+  },
+  {
+    key: 'sex',
+    name: 'Sexta',
+    emoji: '🎧',
+    focus: 'Listening\n+ Fala livre',
+    color: '#f97316',
+    morning: {
+      title: 'Vídeo + Shadowing + Fala livre',
+      time: '06:30 – 07:30',
+      items: ['20 min → vídeo em inglês (sem legenda)', '20 min → repetir frases', '20 min → falar livre (qualquer tema da semana)']
+    },
+    night: {
+      title: 'Vídeo leve 📺',
+      time: 'Noite',
+      items: ['20 min → vídeo leve (YouTube/série)', 'Sem obrigação — só curtir']
+    }
+  },
+  {
+    key: 'sab',
+    name: 'Sábado',
+    emoji: '📺',
+    focus: 'Imersão\nNatural',
+    color: '#ec4899',
+    morning: {
+      title: 'Série / Filme + Fala',
+      time: '30–60 min (qualquer horário)',
+      items: ['Assistir algo em inglês (sem legenda se possível)', 'Falar 5–10 min sobre o que assistiu']
+    },
+    night: {
+      title: 'Livre 🌙',
+      time: 'Sem cobrança',
+      items: ['Sem obrigação', 'Se quiser, música ou podcast em inglês'],
+      type: 'rest'
+    }
+  },
+  {
+    key: 'dom',
+    name: 'Domingo',
+    emoji: '🧘',
+    focus: 'Descanso\nTotal',
+    color: '#14b8a6',
+    morning: {
+      title: 'Descanso Total 🌅',
+      time: 'Dia livre',
+      items: ['Sem estudos', 'Recarregue a energia', 'Exposição passiva se quiser: música, podcast'],
+      type: 'rest'
+    },
+    night: {
+      title: 'Prepara a semana 🌙',
+      time: 'Sem cobrança',
+      items: ['Sem obrigação', 'Mentalize: amanhã começa mais uma semana', 'Você está no caminho certo'],
+      type: 'rest'
+    }
+  }
+];
+
+// State: { 'seg-morning': false, 'seg-night': false, ... }
+let state = {};
+
+// Load from localStorage
+try {
+  const saved = localStorage.getItem('planoIngles');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    // Only load if same week
+    const savedWeek = parsed.week;
+    const currentWeek = getWeekKey();
+    if (savedWeek === currentWeek) {
+      state = parsed.state || {};
+    }
+  }
+} catch(e) {}
+
+function getWeekKey() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const weekNum = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+  return `${now.getFullYear()}-W${weekNum}`;
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('planoIngles', JSON.stringify({ week: getWeekKey(), state }));
+  } catch(e) {}
+}
+
+function toggle(key, rowEl) {
+  state[key] = state[key] !== true;
+  saveState();
+  updateCard(key);
+  updateProgress();
+  checkRowDone(rowEl);
+}
+
+function updateCard(key) {
+  const card = document.getElementById('card-' + key);
+  if (!card) return;
+  const isDone = state[key] === true;
+  if (isDone) { card.classList.add('done'); } else { card.classList.remove('done'); }
+  const checkIcon = card.querySelector('.check-icon');
+  if (checkIcon) checkIcon.innerHTML = isDone ? '\u2713' : '';
+  const typeEl = card.querySelector('.card-type');
+  if (typeEl) {
+    if (isDone) { typeEl.classList.add('done'); } else { typeEl.classList.remove('done'); }
+  }
+}
+
+function checkRowDone(rowEl) {
+  const cards = rowEl.querySelectorAll('.block-card:not(.rest)');
+  const allDone = [...cards].every(c => c.classList.contains('done'));
+  if (allDone && cards.length > 0) {
+    rowEl.classList.add('all-done');
+    spawnConfetti();
+  } else {
+    rowEl.classList.remove('all-done');
+  }
+}
+
+function updateProgress() {
+  // Count today's blocks
+  const today = getTodayKey();
+  const todayData = DAYS.find(d => d.key === today);
+  if (!todayData) {
+    document.getElementById('progressCount').textContent = '–';
+    return;
+  }
+
+  const slots = ['morning', 'night'].filter(s => todayData[s].type !== 'rest');
+  const total = slots.length;
+  const done = slots.filter(s => state[`${today}-${s}`]).length;
+
+  document.getElementById('progressCount').textContent = `${done} / ${total} hoje`;
+  document.getElementById('progressBar').style.width = total > 0 ? `${(done/total)*100}%` : '0%';
+}
+
+function getTodayKey() {
+  const days = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+  return days[new Date().getDay()];
+}
+
+function spawnConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#f59e0b', '#6366f1', '#10b981', '#ec4899', '#06b6d4', '#f97316'];
+  for (let i = 0; i < 30; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (0.8 + Math.random() * 0.8) + 's';
+    piece.style.animationDelay = Math.random() * 0.4 + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    container.appendChild(piece);
+    setTimeout(() => piece.remove(), 2000);
+  }
+}
+
+function buildWeek() {
+  const week = document.getElementById('week');
+  const todayKey = getTodayKey();
+
+  DAYS.forEach(function(day) {
+    const row = document.createElement('div');
+    row.className = 'day-row';
+    row.id = 'row-' + day.key;
+
+    if (day.key === todayKey) {
+      row.style.filter = 'brightness(1.08)';
+    }
+
+    // Day label — appended as a child, never via row.innerHTML
+    const label = document.createElement('div');
+    label.className = 'day-label';
+    label.style.setProperty('--day-color', day.color);
+
+    const emoji = document.createElement('div');
+    emoji.className = 'day-emoji';
+    emoji.textContent = day.emoji;
+
+    const name = document.createElement('div');
+    name.className = 'day-name';
+    name.textContent = day.name;
+
+    const focus = document.createElement('div');
+    focus.className = 'day-focus';
+    focus.innerHTML = day.focus.replace('\n', '<br>');
+
+    label.appendChild(emoji);
+    label.appendChild(name);
+    label.appendChild(focus);
+
+    if (day.key === todayKey) {
+      const today = document.createElement('div');
+      today.style.cssText = 'font-size:9px;color:#10b981;font-weight:700;letter-spacing:.05em;margin-top:4px';
+      today.textContent = 'HOJE';
+      label.appendChild(today);
+    }
+
+    row.appendChild(label);
+
+    // Cards
+    ['morning', 'night'].forEach(function(slot) {
+      const data = day[slot];
+      const cardKey = day.key + '-' + slot;
+      const isRest = data.type === 'rest';
+      const isPreply = data.type === 'preply';
+      const isDone = state[cardKey] === true;
+
+      const card = document.createElement('div');
+      card.id = 'card-' + cardKey;
+      card.className = 'block-card ' + (isRest ? 'rest' : (isPreply ? 'preply ' + slot : slot)) + (isDone ? ' done' : '');
+
+      const typeLabel = slot === 'morning' ? '☀️ Manhã' : '🌙 Noite';
+      const typeClass = isPreply ? 'preply' : slot;
+
+      const header = document.createElement('div');
+      header.className = 'card-header';
+
+      const typeEl = document.createElement('div');
+      typeEl.className = 'card-type ' + typeClass + (isDone ? ' done' : '');
+      typeEl.innerHTML = '<div class="type-dot"></div>' + typeLabel;
+      header.appendChild(typeEl);
+
+      if (!isRest) {
+        const check = document.createElement('div');
+        check.className = 'check-icon';
+        check.innerHTML = isDone ? '✓' : '';
+        header.appendChild(check);
+      }
+
+      const title = document.createElement('div');
+      title.className = 'card-title';
+      title.textContent = data.title;
+
+      const time = document.createElement('div');
+      time.className = 'card-time';
+      time.innerHTML = '⏱ ' + data.time;
+
+      const content = document.createElement('div');
+      content.className = 'card-content';
+      const ul = document.createElement('ul');
+      data.items.forEach(function(item) {
+        const li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+      content.appendChild(ul);
+
+      card.appendChild(header);
+      card.appendChild(title);
+      card.appendChild(time);
+      card.appendChild(content);
+
+      if (!isRest) {
+        const badge = document.createElement('div');
+        badge.className = 'done-badge';
+        badge.textContent = '✓ Concluído!';
+        card.appendChild(badge);
+
+        card.addEventListener('click', function() {
+          card.classList.add('just-done');
+          setTimeout(function() { card.classList.remove('just-done'); }, 500);
+          // Toggle only this card
+          state[cardKey] = state[cardKey] !== true;
+          saveState();
+          // Update only this card's visuals
+          const nowDone = state[cardKey] === true;
+          if (nowDone) { card.classList.add('done'); } else { card.classList.remove('done'); }
+          const chk = card.querySelector('.check-icon');
+          if (chk) chk.innerHTML = nowDone ? '✓' : '';
+          const tp = card.querySelector('.card-type');
+          if (tp) { if (nowDone) { tp.classList.add('done'); } else { tp.classList.remove('done'); } }
+          // Check if row complete
+          const rowCards = row.querySelectorAll('.block-card:not(.rest)');
+          const allDone = Array.prototype.every.call(rowCards, function(c) { return c.classList.contains('done'); });
+          if (allDone && rowCards.length > 0) { row.classList.add('all-done'); spawnConfetti(); }
+          else { row.classList.remove('all-done'); }
+          // Update progress
+          updateProgress();
+        });
+      }
+
+      row.appendChild(card);
+    });
+
+    week.appendChild(row);
+  });
+}
+
+buildWeek();
+updateProgress();
+</script>
+</body>
+</html>
